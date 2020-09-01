@@ -16,40 +16,32 @@ const listMessages = (messages) => {
 
         let nbLikes = messages[i].Likes.length;
 
-		//Création de la section accueillant la liste des posts
-		let listPost = document.createElement("section")
-		listPost.setAttribute("class", "post-list");
-		//Ajout de la section au conteneur principal HTML
-		let main = document.getElementById("main");
-		main.appendChild(listPost);
+		
+		//section au conteneur principal HTML
+		let listPost = document.getElementById("post-list");
+		
 
 	
     	//On crée les élements de la structure principale
 		let postBlock = document.createElement("article");
-		postBlock.setAttribute("class", "post-contenant__index");
+		postBlock.setAttribute("class", "post-contenant__index bgc");
 		listPost.appendChild(postBlock);
-		let postContenu = document.createElement("div");
-		postContenu.setAttribute("class", "post-contenu");
-		postBlock.appendChild(postContenu);
-		let postPost = document.createElement("div");
-		postPost.setAttribute("class", "post bgc");
-		postContenu.appendChild(postPost);
 
 		// post header
 		let postPoster = document.createElement("div"); 
 		postPoster.setAttribute("class", "poster");
+		postBlock.appendChild(postPoster);
 		// user
 		let postUserName = document.createElement("span");
 		postUserName.setAttribute("class", "user-name");
-		postUserName.innerHTML = messages[i].User.firstName + ' ' + messages[i].User.lastName + ' - ' + moment(messages[i].createdAt).format('LLL')+ ' a poster : ';
-		postPost.appendChild(postPoster);
+		postUserName.innerHTML = messages[i].User.firstName + ' ' + messages[i].User.lastName + '<span class="post-date"> - ' + moment(messages[i].createdAt).format('LLL')+ ' à poster : </span>';
 		postPoster.appendChild(postUserName);
 
 		// images
         if (messages[i].attachment) {
 			let postBlockImage = document.createElement("div");
 			postBlockImage.settAttribute("class", "block-image");
-			postPost.appendChild(postBlockImage);
+			postBlock.appendChild(postBlockImage);
 			let postLinkSinglPost = document.createElement("a");
 			postLinkSinglPost.settAttribute("class", "focus");
 			postLinkSinglPost.settAttribute("href", "single-post.html?id=" + messages[i].id);
@@ -63,28 +55,54 @@ const listMessages = (messages) => {
 
 		// titre
 		if (messages[i].title) {
-    	let posTitle = document.createElement("h2");
-		let postLinkTitle = document.createElement("a");
-		postLinkTitle.setAttribute("class", "focus h2");
-		postLinkTitle.setAttribute("href", "single-post.html?id=" + messages[i].id);
-		postPost.appendChild(posTitle);
-		posTitle.appendChild(postLinkTitle);
-		postLinkTitle.textContent = messages[i].title;
+    		let posTitle = document.createElement("h2");
+			let postLinkTitle = document.createElement("a");
+			postLinkTitle.setAttribute("class", "focus a__title");
+			postLinkTitle.setAttribute("href", "single-post.html?id=" + messages[i].id);
+			postBlock.appendChild(posTitle);
+			posTitle.appendChild(postLinkTitle);
+			postLinkTitle.textContent = messages[i].title;
 		}
 		
 		// message
 		if (messages[i].content) {
-		let postBody = document.createElement("p");
-		postBody.setAttribute("class", "body-post");
-		postPost.appendChild(postBody);
-		postBody.innerHTML = messages[i].content; 
+			let postBody = document.createElement("p");
+			postBody.setAttribute("class", "body-post");
+			postBlock.appendChild(postBody);
+			postBody.innerHTML = messages[i].content; 
 		}
 
 		// post footer
 
 		let postAction = document.createElement("div");  
 		postAction.setAttribute("class", "action");
-		postPost.appendChild(postAction);
+		postBlock.appendChild(postAction);
+
+		// effacer
+        if (messages[i].modifiable) {
+
+			const postDeleteBtn = document.createElement('i');
+        	postDeleteBtn.className = 'fas fa-trash-alt'
+        	postAction.appendChild(postDeleteBtn)
+
+            postDeleteBtn.addEventListener('click', () => {
+                axios.delete(`http://localhost:3008/api/messages/delete/${messages[i].id}`, headers)
+                    .then((resp) => {
+						postBlock.remove();
+                    })
+            })
+        }
+		
+		// modifier
+        if (messages[i].modifiable) {
+			const PostModifiableLink = document.createElement('a')
+			PostModifiableLink.className = 'a__title'
+            PostModifiableLink.href = `singl-post.html?id=${messages[i].id}`
+            postAction.appendChild(PostModifiableLink)
+            const postModifyBtn = document.createElement('i')
+			postModifyBtn.className = 'fas fa-pencil-alt'
+            PostModifiableLink.appendChild(postModifyBtn);
+        }
 
 		// like
         const postLike = document.createElement('i');
@@ -108,30 +126,6 @@ const listMessages = (messages) => {
 				postNbLikes.innerHTML = nbLikes
             })
         })
-		// effacer
-        if (messages[i].modifiable) {
-
-			const postDeleteBtn = document.createElement('i');
-        	postDeleteBtn.className = 'fas fa-trash-alt'
-        	postAction.appendChild(postDeleteBtn)
-
-            postDeleteBtn.addEventListener('click', () => {
-                axios.delete(`http://localhost:3008/api/messages/delete/${messages[i].id}`, headers)
-                    .then((resp) => {
-						postBlock.remove();
-                    })
-            })
-        }
-		
-		// modifier
-        if (messages[i].modifiable) {
-			const PostModifiableLink = document.createElement('a')
-            PostModifiableLink.href = `singl-post.html?id=${messages[i].id}`
-            postAction.appendChild(PostModifiableLink)
-            const postModifyBtn = document.createElement('i')
-			postModifyBtn.className = 'fas fa-pencil-alt'
-            PostModifiableLink.appendChild(postModifyBtn);
-        }
 
 	}
 

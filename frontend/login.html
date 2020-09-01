@@ -4,7 +4,7 @@
 	  <meta charset="UTF-8">
 	  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 	  <link rel="shortcut icon" type="image/png" href="img/favicon-groupomania.png">
-	  <title>Page de connection au réseau social de Groupomania</title>
+	  <title>Page de connection</title>
 	  <meta name="description" content="Employé de l'entreprise Groupomania, connectez vous au réseau social de l'entreprise ">
 	  <link rel="stylesheet" href="css/style.css">
 	  <script src="https://kit.fontawesome.com/9376b337f5.js" crossorigin="anonymous"></script>
@@ -14,21 +14,22 @@
 			<nav class="flexbox">
 				<ul>
 					<li class="logo__header">
-						<a href="index.html" class="focus">
-							<img src="img/logo-groupomania.png" alt="Logo de Groupomania"/>
+						<a href="index.html" class="focus logo">
+							<img src="img/logo-groupomania.png" alt="Logo de Groupomania" title="Groupomania"/>
 						</a>
 					</li>
 					<li>
-						<a href="login.html" class="focus">Se connecter<i class="fas fa-sign-in-alt"></i></a>
+						<a href="login.html" class="focus a__actif">Se connecter<i class="fas fa-sign-in-alt"></i></a>
           </li>
           <li>
-						<a href="signup.html" class="focus">S'inscrire</a>
+						<a href="signup.html" class="focus">S'inscrire<i class="fas fa-user-plus"></i></a>
 					</li>
 				</ul>
 			</nav>
     </header>
     <main>
-      <form method="post" name="inscription">
+      <h1>connexion :</h1>
+      <form method="post" name="connexion">
         <div class="souspartie">
           <label for="email">Email *</label>
           <input type="email" class="form-control focus" id="email" required
@@ -39,7 +40,7 @@
           <input type="password" class="form-control focus" id="password" required
           placeholder="Renseignez votre mot de passe" name="password">
         </div>
-        <button type="submit" id="inscription" class="focus">Se Connecter</button>
+        <button type="submit" id="connexion" class="focus">Se Connecter</button>
         <button type="reset" class="focus">Réinitialiser</button>
       </form>
     </main>
